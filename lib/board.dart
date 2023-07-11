@@ -26,6 +26,12 @@ class _BoardState extends State<Board> {
   //cur piece
   Piece currentPiece = Piece(type: Tetromino.L);
 
+  // current score
+  int currentScore = 0;
+
+  // game over status
+  bool gameOver = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -46,17 +52,70 @@ class _BoardState extends State<Board> {
   void gameLoop(Duration frameRate) {
     Timer.periodic(frameRate, (timer) {
       setState(() {
+        //clear lines
+        clearLines();
+
         //check landing
         checkLanding();
+
+        // check if game is over
+        if (gameOver == true) {
+          timer.cancel();
+          showGameOverDialog();
+        }
         //move the current piece down
         currentPiece.movePiece(Direction.down);
       });
     });
   }
 
+  // game over dialog
+  void showGameOverDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Game Over'),
+        content: Text("Your score is: $currentScore"),
+        actions: [
+          TextButton(
+              onPressed: () {
+                // reset the game
+                resetGame();
+
+                Navigator.pop(context);
+              },
+              child: Text('Play again'))
+        ],
+      ),
+    );
+  }
+
+  // reset game
+
+  void resetGame() {
+    // clear the game board
+    gameBoard = List.generate(
+      colL,
+      (i) => List.generate(
+        rowL,
+        (j) => null,
+      ),
+    );
+
+    // new game
+    gameOver = false;
+    currentScore = 0;
+
+    // create new piece
+    createNewPiece();
+
+    // start the game again
+    startGame();
+  }
   //check collision in a future position
   // return true —> there is a collision
   // return false -> there is no collision
+
   bool checkCollision(Direction direction) {
     //loop through each position of the current piece
     for (int i = 0; i < currentPiece.position.length; i++) {
@@ -106,6 +165,18 @@ class _BoardState extends State<Board> {
         Tetromino.values[rand.nextInt(Tetromino.values.length)];
     currentPiece = Piece(type: randomType);
     currentPiece.initPiece();
+
+    /*
+    Since our game over condition is if there is a piece at the top level, you want
+    to check if the game is over when you create a new piece instead of checking
+    every frame, because new pieces are allowed to go through the top level but if
+    there is already a piece in the top level when the new piece is created, then
+    game is over
+    */
+
+    if (isGameOver()) {
+      gameOver = true;
+    }
   }
 
   void moveLeft() {
@@ -135,7 +206,46 @@ class _BoardState extends State<Board> {
   // clear lines
   void clearLines() {
     // Loop through each row of the game board from bottom to top
-    for (int row = colL - 1; row >= 0; row--) {}
+    for (int row = colL - 1; row >= 0; row--) {
+      // Initialize a variable to track if the row is full
+      bool rowIsFull = true;
+
+      // Check if the row if full (all columns in the row are filled with pieces)
+      for (int col = 0; col < rowL; col++) {
+        // if there's an empty column, set rowlsFull to false and break the loop
+        if (gameBoard[row][col] == null) {
+          rowIsFull = false;
+          break;
+        }
+      }
+      // if the row is full, clear the row and shift rows down
+      if (rowIsFull) {
+        // move all rows above the cleared row down by one position
+        for (int r = row; r > 0; r--) {
+          // copy the above row to the current row
+          gameBoard[r] = List.from(gameBoard[r - 1]);
+        }
+
+        // set the top row to empty
+        gameBoard[0] = List.generate(row, (index) => null);
+
+        // incr score
+        currentScore++;
+      }
+    }
+  }
+
+  // GAME OVER METHOD
+  bool isGameOver() {
+    // check if any column in the top row are filled
+    for (int col = 0; col < rowL; col++) {
+      if (gameBoard[0][col] != null) {
+        return true;
+      }
+    }
+
+    // if the top row is empty, the game is not over
+    return false;
   }
 
   @override
@@ -160,27 +270,31 @@ class _BoardState extends State<Board> {
                   if (currentPiece.position.contains(index)) {
                     return Pixel(
                       color: currentPiece.color,
-                      child: index,
                     );
                   }
                   //landed pieces
                   else if (gameBoard[row][col] != null) {
                     final Tetromino? tetrominoType = gameBoard[row][col];
                     return Pixel(
-                        color: tetrominoColors[tetrominoType], child: '');
+                        color: tetrominoColors[tetrominoType], );
                   }
                   //blank pixel
                   else {
                     return Pixel(
                       color: Colors.grey[900],
-                      child: index,
                     );
                   }
                 }),
           ),
+
+          // Score
+          Text(
+            'Score:$currentScore',
+            style: TextStyle(color: Colors.white),
+          ),
           //game controls
           Padding(
-            padding: EdgeInsets.only(bottom: 50.0),
+            padding: EdgeInsets.only(bottom: 50.0, top: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
