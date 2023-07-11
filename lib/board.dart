@@ -34,7 +34,6 @@ class _BoardState extends State<Board> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //start game when app starts
     startGame();
@@ -44,7 +43,7 @@ class _BoardState extends State<Board> {
     currentPiece.initPiece();
 
     //frame refresh rate
-    Duration frameRate = Duration(milliseconds: 400);
+    Duration frameRate = const Duration(milliseconds: 400);
     gameLoop(frameRate);
   }
 
@@ -74,7 +73,7 @@ class _BoardState extends State<Board> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Game Over'),
+        title: const Text('Game Over'),
         content: Text("Your score is: $currentScore"),
         actions: [
           TextButton(
@@ -84,7 +83,7 @@ class _BoardState extends State<Board> {
 
                 Navigator.pop(context);
               },
-              child: Text('Play again'))
+              child: const Text('Play again'))
         ],
       ),
     );
@@ -257,7 +256,7 @@ class _BoardState extends State<Board> {
           //GAME GRID
           Expanded(
             child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: rowL * colL,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: rowL),
@@ -290,11 +289,11 @@ class _BoardState extends State<Board> {
           // Score
           Text(
             'Score:$currentScore',
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
           //game controls
           Padding(
-            padding: EdgeInsets.only(bottom: 50.0, top: 50),
+            padding: const EdgeInsets.only(bottom: 50.0, top: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -302,19 +301,19 @@ class _BoardState extends State<Board> {
                 IconButton(
                   onPressed: moveLeft,
                   color: Colors.white,
-                  icon: Icon(Icons.arrow_back_ios),
+                  icon: const Icon(Icons.arrow_back_ios),
                 ),
                 //rotate
                 IconButton(
                   onPressed: rotatePiece,
                   color: Colors.white,
-                  icon: Icon(Icons.rotate_right),
+                  icon: const Icon(Icons.rotate_right),
                 ),
                 //right
                 IconButton(
                   onPressed: moveRight,
                   color: Colors.white,
-                  icon: Icon(Icons.arrow_forward_ios),
+                  icon: const Icon(Icons.arrow_forward_ios),
                 ),
               ],
             ),

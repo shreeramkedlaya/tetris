@@ -10,7 +10,7 @@ class Piece {
 
   List<int> position = [];
   Color get color {
-    return tetrominoColors[type] ?? Color(0xFFFFFFFF);
+    return tetrominoColors[type] ?? const Color(0xFFFFFFFF);
   }
 
   //generate the integers

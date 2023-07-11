@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class Pixel extends StatelessWidget {
     return Container(
         decoration:
             BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
-        margin: EdgeInsets.all(1),
-        child: Center());
+        margin: const EdgeInsets.all(1),
+        child: const Center());
   }
 }
