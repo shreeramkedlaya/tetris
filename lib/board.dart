@@ -6,7 +6,6 @@ import 'package:tetris/values.dart';
 import 'pixel.dart';
 
 //create game board
-
 List<List<Tetromino?>> gameBoard = List.generate(
   colL,
   (i) => List.generate(
@@ -49,23 +48,28 @@ class _BoardState extends State<Board> {
 
   //game Loop
   void gameLoop(Duration frameRate) {
-    Timer.periodic(frameRate, (timer) {
-      setState(() {
-        //clear lines
-        clearLines();
+    Timer.periodic(
+      frameRate,
+      (timer) {
+        setState(
+          () {
+            //clear lines
+            clearLines();
 
-        //check landing
-        checkLanding();
+            //check landing
+            checkLanding();
 
-        // check if game is over
-        if (gameOver == true) {
-          timer.cancel();
-          showGameOverDialog();
-        }
-        //move the current piece down
-        currentPiece.movePiece(Direction.down);
-      });
-    });
+            // check if game is over
+            if (gameOver == true) {
+              timer.cancel();
+              showGameOverDialog();
+            }
+            //move the current piece down
+            currentPiece.movePiece(Direction.down);
+          },
+        );
+      },
+    );
   }
 
   // game over dialog
@@ -77,20 +81,20 @@ class _BoardState extends State<Board> {
         content: Text("Your score is: $currentScore"),
         actions: [
           TextButton(
-              onPressed: () {
-                // reset the game
-                resetGame();
+            onPressed: () {
+              // reset the game
+              resetGame();
 
-                Navigator.pop(context);
-              },
-              child: const Text('Play again'))
+              Navigator.pop(context);
+            },
+            child: const Text('Play again'),
+          )
         ],
       ),
     );
   }
 
   // reset game
-
   void resetGame() {
     // clear the game board
     gameBoard = List.generate(
@@ -111,6 +115,7 @@ class _BoardState extends State<Board> {
     // start the game again
     startGame();
   }
+
   //check collision in a future position
   // return true —> there is a collision
   // return false -> there is no collision
@@ -256,34 +261,36 @@ class _BoardState extends State<Board> {
           //GAME GRID
           Expanded(
             child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: rowL * colL,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: rowL),
-                itemBuilder: (context, index) {
-                  // get row and col of each index
-                  int row = (index / rowL).floor();
-                  int col = index % colL;
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: rowL * colL,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: rowL),
+              itemBuilder: (context, index) {
+                // get row and col of each index
+                int row = (index / rowL).floor();
+                int col = index % colL;
 
-                  //current piece
-                  if (currentPiece.position.contains(index)) {
-                    return Pixel(
-                      color: currentPiece.color,
-                    );
-                  }
-                  //landed pieces
-                  else if (gameBoard[row][col] != null) {
-                    final Tetromino? tetrominoType = gameBoard[row][col];
-                    return Pixel(
-                        color: tetrominoColors[tetrominoType], );
-                  }
-                  //blank pixel
-                  else {
-                    return Pixel(
-                      color: Colors.grey[900],
-                    );
-                  }
-                }),
+                //current piece
+                if (currentPiece.position.contains(index)) {
+                  return Pixel(
+                    color: currentPiece.color,
+                  );
+                }
+                //landed pieces
+                else if (gameBoard[row][col] != null) {
+                  final Tetromino? tetrominoType = gameBoard[row][col];
+                  return Pixel(
+                    color: tetrominoColors[tetrominoType],
+                  );
+                }
+                //blank pixel
+                else {
+                  return Pixel(
+                    color: Colors.grey[900],
+                  );
+                }
+              },
+            ),
           ),
 
           // Score
@@ -291,24 +298,28 @@ class _BoardState extends State<Board> {
             'Score:$currentScore',
             style: const TextStyle(color: Colors.white),
           ),
+
           //game controls
           Padding(
             padding: const EdgeInsets.only(bottom: 50.0, top: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+
                 //left
                 IconButton(
                   onPressed: moveLeft,
                   color: Colors.white,
                   icon: const Icon(Icons.arrow_back_ios),
                 ),
+
                 //rotate
                 IconButton(
                   onPressed: rotatePiece,
                   color: Colors.white,
                   icon: const Icon(Icons.rotate_right),
                 ),
+                
                 //right
                 IconButton(
                   onPressed: moveRight,
