@@ -14,7 +14,7 @@ class Piece {
   }
 
   //generate the integers
-  void initPiece() {
+  void initializePiece() {
     switch (type) {
       case Tetromino.L:
         position = [-26, -16, -6, -5];

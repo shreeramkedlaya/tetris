@@ -39,7 +39,7 @@ class _BoardState extends State<Board> {
   }
 
   void startGame() {
-    currentPiece.initPiece();
+    currentPiece.initializePiece();
 
     //frame refresh rate
     Duration frameRate = const Duration(milliseconds: 200);
@@ -51,23 +51,21 @@ class _BoardState extends State<Board> {
     Timer.periodic(
       frameRate,
       (timer) {
-        setState(
-          () {
-            //clear lines
-            clearLines();
+        setState(() {
+          //clear lines
+          clearLines();
 
-            //check landing
-            checkLanding();
+          //check landing
+          checkLanding();
 
-            // check if game is over
-            if (gameOver == true) {
-              timer.cancel();
-              showGameOverDialog();
-            }
-            //move the current piece down
-            currentPiece.movePiece(Direction.down);
-          },
-        );
+          // check if game is over
+          if (gameOver == true) {
+            timer.cancel();
+            showGameOverDialog();
+          }
+          //move the current piece down
+          currentPiece.movePiece(Direction.down);
+        });
       },
     );
   }
@@ -122,7 +120,7 @@ class _BoardState extends State<Board> {
 
   bool checkCollision(Direction direction) {
     //loop through each position of the current piece
-    for (int i = 0; i < currentPiece.position.length; i++) {
+    for (int i = 0; i < currentPiece.position.length - 1; i++) {
       //calc row and col
       int row = (currentPiece.position[i] / rowL).floor();
       int col = currentPiece.position[i] % colL;
@@ -155,7 +153,9 @@ class _BoardState extends State<Board> {
         if (row >= 0 && col >= 0) {
           gameBoard[row][col] = currentPiece.type;
         }
+        //print(row);
       }
+
       //once landed, create the next piece
       createNewPiece();
     }
@@ -168,7 +168,7 @@ class _BoardState extends State<Board> {
     Tetromino randomType =
         Tetromino.values[rand.nextInt(Tetromino.values.length)];
     currentPiece = Piece(type: randomType);
-    currentPiece.initPiece();
+    currentPiece.initializePiece();
 
     /*
     Since our game over condition is if there is a piece at the top level, you want
@@ -305,7 +305,6 @@ class _BoardState extends State<Board> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
                 //left
                 IconButton(
                   onPressed: moveLeft,
@@ -319,7 +318,7 @@ class _BoardState extends State<Board> {
                   color: Colors.white,
                   icon: const Icon(Icons.rotate_right),
                 ),
-                
+
                 //right
                 IconButton(
                   onPressed: moveRight,
