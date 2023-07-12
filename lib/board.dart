@@ -210,7 +210,7 @@ class _BoardState extends State<Board> {
   // clear lines
   void clearLines() {
     // Loop through each row of the game board from bottom to top
-    for (int row = colL - 1; row >= 0; row--) {
+    for (int row = colL - 1; row > 0; row--) {
       // Initialize a variable to track if the row is full
       bool rowIsFull = true;
 
