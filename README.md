@@ -28,9 +28,8 @@ To get started with the Tetris game, follow the instructions below:
 
 - **Left**: Move the tetromino left.
 - **Right**: Move the tetromino right.
-- **Down**: Move the tetromino down.
-- **Up**: Rotate the tetromino clockwise.
-- **Space**: Instantly drop the tetromino to the bottom.
+- **Rotate**: Rotate the tetromino clockwise.
+- **Down**: Instantly drop the tetromino to the bottom.
 
 ## Features
 
@@ -46,11 +45,11 @@ To get started with the Tetris game, follow the instructions below:
 The project directory is structured as follows:
 
 - `lib/`: Contains the main Dart code for the Tetris game.
-  - `models/`: Contains the model classes for the Tetris game.
-  - `widgets/`: Contains the UI widgets used in the game.
   - `main.dart`: The entry point of the application.
-- `assets/`: Contains any additional assets, such as images or sounds.
-
+  - `board.dart`: The game board display and the whole architecture
+  - `piece.dart`: Definition of each piece and the place that is occupied when the rotated
+  - `pixel.dart`: Design of each pixel of the Tetromino piece
+  - `values.dart`: The different values/definitions required by the tetris application to work, e.g., Colors, Directions,etc.
 ## Contributing
 
 Contributions to this Tetris game are welcome! If you have any suggestions, bug reports, or feature requests, please open an issue on the GitHub repository.
@@ -58,6 +57,6 @@ Contributions to this Tetris game are welcome! If you have any suggestions, bug 
 ## Acknowledgments
 
 - The Tetris game logic is based on the classic Tetris game by Alexey Pajitnov.
-- This project was inspired by various Tetris implementations and tutorials available online.
+- This project was inspired by various Tetris implementations and tutorial available online.
 
-Have fun playing Tetris!
+**Have fun playing Tetris!**

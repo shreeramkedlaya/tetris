@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 
 class Pixel extends StatelessWidget {
   var color;
+  var child;
   Pixel({
     super.key,
     required this.color,
+    this.child,
   });
 
   @override

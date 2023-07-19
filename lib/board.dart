@@ -281,6 +281,7 @@ class _BoardState extends State<Board> {
                   final Tetromino? tetrominoType = gameBoard[row][col];
                   return Pixel(
                     color: tetrominoColors[tetrominoType],
+                    child: '',
                   );
                 }
                 //blank pixel
