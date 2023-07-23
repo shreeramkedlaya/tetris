@@ -13,7 +13,7 @@ To get started with the Tetris game, follow the instructions below:
 ### Installation
 
 1. Clone the repository or download the source code:
-   git clone https://github.com/your-username/tetris-flutter.git
+   git clone https://github.com/shreeramkedlaya/tetris.git
 
 2. Navigate to the project directory:
    cd tetris-flutter
